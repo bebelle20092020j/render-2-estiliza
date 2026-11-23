@@ -1,238 +1,711 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sentinela - Almoxarifado</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #243447;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #123e63;
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 3px 12px rgba(0,0,0,.12);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .logo-icon {
+            background: #2d6f9f;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+        }
+
+        .nav-brand h1 {
+            font-size: 21px;
+            margin: 0 0 5px;
+        }
+
+        .nav-brand span {
+            font-size: 12px;
+            color: #d5e5f2;
+        }
+
+        .user-pill {
+            background: rgba(255,255,255,.13);
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        /* CONTAINER */
+        .container {
+            width: 92%;
+            max-width: 1450px;
+            margin: 25px auto;
+        }
+
+        /* ALERTA */
+        .alerta-estoque {
+            background: #fff4df;
+            color: #95600c;
+            border: 1px solid #f2d28c;
+            border-left: 5px solid #e9a23b;
+            padding: 15px 18px;
+            border-radius: 9px;
+            margin-bottom: 22px;
+        }
+
+        /* ESTATÍSTICAS */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 3px 12px rgba(18,62,99,.07);
+            border: 1px solid #e4ebf2;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 23px;
+        }
+
+        .purple {
+            background: #eee8fa;
+        }
+
+        .green {
+            background: #e1f5e9;
+        }
+
+        .orange {
+            background: #fff0dc;
+        }
+
+        .red {
+            background: #fde7e7;
+        }
+
+        .stat-value {
+            font-size: 25px;
+            font-weight: bold;
+            color: #123e63;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* GRID PRINCIPAL */
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(300px, .85fr) minmax(400px, 1.5fr);
+            gap: 22px;
+            align-items: start;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e1e8ef;
+            border-radius: 13px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(18,62,99,.06);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background: #123e63;
+            color: white;
+            padding: 17px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .card-header h2 {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* FORMULÁRIOS */
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 7px;
+            color: #34495e;
+        }
+
+        .form-group small {
+            color: #8493a3;
+            font-weight: normal;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d5dee8;
+            border-radius: 8px;
+            background: #fff;
+            font-size: 14px;
+            outline: none;
+            color: #34495e;
+        }
+
+        .form-control:focus,
+        .search-input:focus {
+            border-color: #2d6f9f;
+            box-shadow: 0 0 0 3px rgba(45,111,159,.12);
+        }
+
+        /* ABAS */
+        .entrada-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 11px 8px;
+            border: 1px solid #dce5ee;
+            border-radius: 8px;
+            background: #f3f6f9;
+            color: #526579;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: #123e63;
+            border-color: #123e63;
+            color: white;
+        }
+
+        /* BOTÕES */
+        .btn-full {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .btn-purple {
+            background: #2d6f9f;
+        }
+
+        .btn-purple:hover {
+            background: #20577f;
+        }
+
+        .btn-sm {
+            border: none;
+            border-radius: 7px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-secondary {
+            background: #e7eff6;
+            color: #123e63;
+        }
+
+        .btn-secondary:hover {
+            background: #d3e2ef;
+        }
+
+        /* HISTÓRICO */
+        .empty-state {
+            text-align: center;
+            padding: 25px 10px;
+            color: #8997a5;
+        }
+
+        .empty-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+        }
+
+        /* BUSCA E FILTROS */
+        .search-bar {
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d5dee8;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .chip {
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #edf2f7;
+            color: #536579;
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .chip.active {
+            background: #123e63;
+            color: white;
+        }
+
+        /* TABELA */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .estoque-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 550px;
+        }
+
+        .estoque-table th {
+            background: #edf3f8;
+            color: #34536d;
+            padding: 13px 12px;
+            font-size: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dce5ee;
+        }
+
+        .estoque-table td {
+            padding: 13px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .estoque-table tr:hover td {
+            background: #f8fbfd;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 950px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .container {
+                width: 94%;
+                margin: 15px auto;
+            }
+
+            .navbar {
+                padding: 15px;
+            }
+
+            .nav-brand h1 {
+                font-size: 17px;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+                gap: 9px;
+            }
+
+            .stat-card {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .stat-label {
+                font-size: 10px;
+            }
+
+            .card-body {
+                padding: 15px;
+            }
+
+            .card-header {
+                padding: 15px;
+            }
+
+            .entrada-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    
-<!-- navbar -->
- <header class="navbar">
-<div class="nav-brand">
-    <div class="logo-icon">📦</div>
-<div>
-<h1>Hospital Pro -- Almoxerifado</h1>
-<span>Gestão de Entrada e Controle de Estoque</span>
-</div>
-</div>
-<div class="nav-user">
-    <span class="user-pill" id="nomeUsuario">📦 Almoxerifado</span>
-</div>
- </header>
 
- <div class="container">
-
-<!-- ALERTA -->
-<div class="alerta-estoque" id="alertaEstoque"
-    style="display:none">
-    <strong>Atenção:</strong> <span id="alertaTexto">
-
-    </span>
-</div>
- </div>
-
-<!-- STATS -->
- <div class="stats-bar">
-<div class="stat-card">
-    <div class="stat-icon purple">📦</div>
-<div>
-    <div class="stat-value" id="statItens">--</div>
-    <div class="stat-label">tipos Cadastrados</div>
-</div>
-</div>
-<div class="stat-card">
-<div class="stat-icon green">🟢</div>
-<div>
-    <div class="stat-value" id="statOk">--</div>
-    <div class="stat-label">Estoque Normal</div>
-</div>
-</div>
-
-<div class="stat-card"></div>
-<div class="stat-icon orange">⚠️</div>
- 
-<div class="stat-value" id="statBaixo">-</div>
-<div class="stat-label">Estoque Baixo (MENOR QUE10)</div>
-</div>
-</div>
-<div class="stat-card">
-
-    <div class="stat-icon red">🚫</div>
-    <div>
-        <div class="stat-value" id="statZerado">--</div>
-        <div class="stat-label">Zerados / Esgotados</div>
-    </div>
-</div>
-</div>
-
-<!-- MAIN GRID -->
- <div class="main-grid">
-
-<!-- --- COLUNA ESQUERDA: FORMULÁRIO ENTRADA --- -->
-<div class="card">
-    <div class="card-header">
-        <h2>📥 Entrada de Medicamentos</h2>
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="nav-brand">
+        <div class="logo-icon">📦</div>
+        <div>
+            <h1>Sentinela - Almoxarifado</h1>
+            <span>Gestão de Entrada e Controle de Estoque</span>
+        </div>
     </div>
 
-    <div class="card-body">
+    <div class="nav-user">
+        <span class="user-pill" id="nomeUsuario">📦 Almoxarifado</span>
+    </div>
+</header>
 
+<div class="container">
 
-        <!-- Tabs: Novo ou Repor -->
-<div class="entrada-tabs">
-    <button class="tab-btn active" id="tabNovo" 
-    onclick="setTab('novo')">➕Novo
-    Medicamento</button>
-    <button class="tab-btn" id="tabRepor" onclick="setTab('repor')">📦 Repor Existente</button>
-</div>
-    
-      <!-- PAINEL: Cadastrar Novo -->
-       <div id="painelNovo">
-        <div class="form-group">
-            <label for="emNome">Nome do Medicamento</label>
-            <input type="text" id="emNome" class="form-control"
-            placeholder="Ex: Paracetamol 750mg"
-            autocomplete="off">
+    <!-- ALERTA -->
+    <div class="alerta-estoque" id="alertaEstoque" style="display:none">
+        <strong>Atenção:</strong>
+        <span id="alertaTexto"></span>
+    </div>
+
+    <!-- ESTATÍSTICAS -->
+    <div class="stats-bar">
+
+        <div class="stat-card">
+            <div class="stat-icon purple">📦</div>
+            <div>
+                <div class="stat-value" id="statItens">--</div>
+                <div class="stat-label">Tipos cadastrados</div>
+            </div>
         </div>
 
-<div class="form-group">
-    <label for="emQtd">Quantidade
-        <small>(unidades a adicionar)</small></label>
-        <input type="number" id="emQtd" class="form-control"
-        value="10" min="1">
-</div>
+        <div class="stat-card">
+            <div class="stat-icon green">🟢</div>
+            <div>
+                <div class="stat-value" id="statOk">--</div>
+                <div class="stat-label">Estoque normal</div>
+            </div>
+        </div>
 
-<div class="form-group">
-    <label for="emUnidade">Tipo de Unidade</label>
-    <select id="emUnidade" class="form-control">
-        <option value="comprimidos">Comprimentos</option>
-        <option value="cápsulas">Cápsulas</option>
-        <option value="frascos">Frascos</option>
-        <option value="ampolas">Ampolas</option>
-        <option value="saches">Saches</option>
-        <option value="Unidades">Unidades</option>
-    </select>
-</div>
+        <div class="stat-card">
+            <div class="stat-icon orange">⚠️</div>
+            <div>
+                <div class="stat-value" id="statBaixo">--</div>
+                <div class="stat-label">Estoque baixo (menor que 10)</div>
+            </div>
+        </div>
 
-<div class="form-group">
-    <label for="emCategoria">Categoria
-        Farmacológica</label>
-        <select id="emCategoria" class="form-control">
-            <option value="Analgésico/Antipirético">
-                Analgésico /
-                Antipirético</option>
-                <option value="Antibiótico">Antibiótico</option>
-                <option value="Anti-inflamatório">Anti-inflamatório</option>
-                <option value="Antialérgico">Antialérgico</option>
-                <option value="protetor gástrico">Protetor 
-                    gástrico</option>
-                    <option value="antiespamódico">
-                        Antiespamódico</option>
-                        <option value="Antiemético">Antiemético</option>
-                        <option value="Solução">Solução</option>
-                        <option value="Vitamina/Suplemento">Vitamina / 
-                            Suplemento</option>
-                            <option value="Geral">Geral</option>
-        </select>
-        
-<button class="btn-full btn-purple" onclick="darEntrada()">
-                    📥 Registrar Entrada no Estoque
-                </button>
+        <div class="stat-card">
+            <div class="stat-icon red">🚫</div>
+            <div>
+                <div class="stat-value" id="statZerado">--</div>
+                <div class="stat-label">Zerados / Esgotados</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="main-grid">
+
+        <!-- COLUNA ESQUERDA -->
+        <div>
+
+            <!-- ENTRADA DE MEDICAMENTOS -->
+            <div class="card">
+
+                <div class="card-header">
+                    <h2>📥 Entrada de Medicamentos</h2>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="entrada-tabs">
+                        <button class="tab-btn active" id="tabNovo"
+                            onclick="setTab('novo')">
+                            ➕ Novo Medicamento
+                        </button>
+
+                        <button class="tab-btn" id="tabRepor"
+                            onclick="setTab('repor')">
+                            📦 Repor Existente
+                        </button>
+                    </div>
+
+                    <!-- CADASTRAR NOVO -->
+                    <div id="painelNovo">
+
+                        <div class="form-group">
+                            <label for="emNome">Nome do Medicamento</label>
+                            <input type="text" id="emNome"
+                                class="form-control"
+                                placeholder="Ex: Paracetamol 750mg"
+                                autocomplete="off">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emQtd">
+                                Quantidade
+                                <small>(unidades a adicionar)</small>
+                            </label>
+                            <input type="number" id="emQtd"
+                                class="form-control"
+                                value="10" min="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emUnidade">Tipo de Unidade</label>
+                            <select id="emUnidade" class="form-control">
+                                <option value="comprimidos">Comprimidos</option>
+                                <option value="cápsulas">Cápsulas</option>
+                                <option value="frascos">Frascos</option>
+                                <option value="ampolas">Ampolas</option>
+                                <option value="saches">Sachês</option>
+                                <option value="Unidades">Unidades</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emCategoria">
+                                Categoria Farmacológica
+                            </label>
+
+                            <select id="emCategoria" class="form-control">
+                                <option value="Analgésico/Antipirético">
+                                    Analgésico / Antipirético
+                                </option>
+                                <option value="Antibiótico">Antibiótico</option>
+                                <option value="Anti-inflamatório">
+                                    Anti-inflamatório
+                                </option>
+                                <option value="Antialérgico">Antialérgico</option>
+                                <option value="protetor gástrico">
+                                    Protetor gástrico
+                                </option>
+                                <option value="antiespamódico">
+                                    Antiespasmódico
+                                </option>
+                                <option value="Antiemético">Antiemético</option>
+                                <option value="Solução">Solução</option>
+                                <option value="Vitamina/Suplemento">
+                                    Vitamina / Suplemento
+                                </option>
+                                <option value="Geral">Geral</option>
+                            </select>
+                        </div>
+
+                        <button class="btn-full btn-purple"
+                            onclick="darEntrada()">
+                            📥 Registrar Entrada no Estoque
+                        </button>
+
+                    </div>
+
+                    <!-- REPOR EXISTENTE -->
+                    <div id="painelRepor" style="display:none">
+
+                        <div class="form-group">
+                            <label for="selReported">
+                                Selecionar Medicamento
+                            </label>
+
+                            <select id="selReported" class="form-control">
+                                <option value="">-- Selecione --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reporQtd">
+                                Quantidade a Adicionar
+                            </label>
+
+                            <input type="number" id="reporQtd"
+                                class="form-control"
+                                placeholder="Ex: 10" min="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reporObs">
+                                Observação <small>(opcional)</small>
+                            </label>
+
+                            <input type="text" id="reporObs"
+                                class="form-control"
+                                placeholder="Ex: Nota fiscal NF-001">
+                        </div>
+
+                        <button class="btn-full btn-purple"
+                            onclick="reporEstoque()">
+                            ➕ Adicionar ao Estoque Existente
+                        </button>
+
+                    </div>
+
+                </div>
             </div>
 
-            <!-- PAINEL: Repor Existente -->
-             <div class="form-group">
-                <label for="selReporMed">Selecionar Medicamento
+            <!-- HISTÓRICO -->
+            <div class="card">
 
-                </label>
+                <div class="card-header">
+                    <h2>📋 Últimas Entradas Registradas</h2>
 
-                <select id="selReported" class="form-control">
-                    <option value="">-- Selecione --</option>
-                </select>
-             </div>
-             <div class="form-group">
-                <label for="reporQtd">Quantidade a 
-                    Adicionar</label>
-                    <input type="text" id="reporObs"
-                    class="form-control" placeholder="10" min="1">
-             </div>
+                    <button class="btn-sm btn-secondary"
+                        onclick="carregarHistoricoEntradas()">
+                        🔄 Atualizar
+                    </button>
+                </div>
 
-<div class="form-group">
-    <label for="reporObs">Observação <small>
-        (opcional)</small></label>
-        <input type="text" id="reporObs"
-        class="form-control" placeholder="Ex: Nota fiscal NF -001">
-</div>
-<button class="btn-full btn-purple"
-onclick="reporEstoque()">
-➕Adicionar ao Estoque Existente
-</button>
-        </div>
-     </div>
+                <div class="card-body">
 
-<!-- Histórico de Entradas -->
-  <div class="card" style="margin-top:20px">
-    <div class="card-header">
-        <h2>📋Últimas Entradas Registradas</h2>
-        <button class="btn-sm btn-secondary"
-        onclick="carregarHistoricoEntradas()">🔄️</button>
-    <div class="empty-state">
-        <div class="empty-icon">📋</div>
-        <p>Nenhuma entrada registrada ainda.</p>
-    </div>
-  </div>
- </div>
-</div>
+                    <div id="historicoEntradas">
+                        <div class="empty-state">
+                            <div class="empty-icon">📋</div>
+                            <p>Nenhuma entrada registrada ainda.</p>
+                        </div>
+                    </div>
 
-<!-- Coluna Direita: Estoque Atual -->
- <div>
-    <div class="card">
-        <div class="card-header">
-            <h2>📊 Estoque atual  de Medicamnetos</h2>
-            <button class="btn-sm btn-secondary" 
-            onclick="carregarEstoque()">🔄️ Atualizar</button>
-        </div>
-        <div class="card-body">
-
-            <div class="search-bar">
-                <input type="text" class="search-input"
-                id="buscaMed" placeholder="🔍 Buscar medicamneto..."
-                oninput="filtrarTabela()">
+                </div>
             </div>
 
-<div class="filter-chips" id="filterchips">
-    <span class="chip active" onclick="setFiltro
-    ('todos', this)">Todos</span>
-</div>
+        </div>
 
-<div style="overflow-x: auto;">
-    <table class="estoque-table">
-        <thead>
-            <tr>
-                <th>Medicamento</th>
-                <th>Categoria</th>
-                <th>Disponível</th>
-                <th>Unidade</th>
-                <th style="text-align: right;">Ações</th>
-            </tr>
-        </thead>
-    </table>
-</div>
+        <!-- COLUNA DIREITA: ESTOQUE -->
+        <div>
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h2>📊 Estoque Atual de Medicamentos</h2>
+
+                    <button class="btn-sm btn-secondary"
+                        onclick="carregarEstoque()">
+                        🔄 Atualizar
+                    </button>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="search-bar">
+                        <input type="text"
+                            class="search-input"
+                            id="buscaMed"
+                            placeholder="🔍 Buscar medicamento..."
+                            oninput="filtrarTabela()">
+                    </div>
+
+                    <div class="filter-chips" id="filterchips">
+                        <span class="chip active"
+                            onclick="setFiltro('todos', this)">
+                            Todos
+                        </span>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="estoque-table">
+                            <thead>
+                                <tr>
+                                    <th>Medicamento</th>
+                                    <th>Categoria</th>
+                                    <th>Disponível</th>
+                                    <th>Unidade</th>
+                                    <th style="text-align:right">Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="estoqueBody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
 
         </div>
+
     </div>
- </div>
-   
-
 </div>
-
-        
-</div>
-</div>
-</div>
-</div>
- </div>
-
 
 </body>
 </html>
