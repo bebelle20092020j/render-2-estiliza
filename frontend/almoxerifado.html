@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-brand">
+            <div class="logo-icon"></div>
+        </div>
+        <h1>Hospital Pro- Almoxarifado</h1>
+        <span>Gestão de Entrada e Controle de Estoque</span>
+        </div>
+        </div>
+
+        <div class="nav-user">
+            <span class="user-pill" id="nomeUsuario">Almoxarifado</span>
+            <a href="index.html" class="btn-nav">Sair</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="alerta-estoque" id="alertaEstoque"
+        style="display:none">
+            <strong>Atenção:</strong> <span id="alertaTexto">
+
+            </span>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-icon purple">📦</div>
+                <div>
+                    <div class="stat-value" id="statItens">-</div>
+                    <div class="stat-label">Tipos Cadastrados</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">🟢</div>
+                <div>
+                    <div class="stat-value" id="statOk">-</div>
+                    <div class="stat-label">Estoque Normal</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">⚠️</div>
+                <div>
+                    <div class="stat-value" id="statBaixo">-</div>
+                    <div class="stat-label">Estoque Baixo (MENOR QUE10)</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon red">🚫</div>
+                <div>
+                    <div class="stat-value" id="statZerado">-</div>
+                    <div class="stat-label">Zerado / Esgotados</div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- __ MAIN GRID__-->
+ <div class="main-grid">
+
+    <!--__ Coluna esquerda: formulário entrada-->
+    <div>
+        <div class="card">
+            <div class="card-header">
+                <h2>💊ENTRADA DE MEDICAMENTOS</h2>
+            </div>
+            <div class="card-body">
+
+                <!-- tabs:Novo ou Repor-->
+                 <div class="entrada-tabs">
+                    <button class="tabs-btn active" id="tabNovo"
+                    onclick="setTab('novo')">➕ Novo medicamento </button>
+                    <button Class="tab-btn" id="tabRepor" onclick="setTab('repor')">📦Repor Existente</button>
+                 </div>
+
+                 <!--painel: cadastrar novo-->
+                 <div class="form-group">
+                    <label for ="form-group">
+                        <input type="text" id="emNome" class="form-control"
+                        placeholder="Ex: paracetanol 750mg"
+                        autocomplete="off">
+                    </div>
+                        <div class="form-group">
+                            <label for="emUnidade">Tipo de Unidade</label>
+                            <select id="emUnidade" class="form-control">
+                                <option value="comprimento">Comprimento</option>
+                                <option value="cápsulas">Cápsulas</option>
+                                <option value="frascos">frascos</option>
+                                <option value="ampolas">ampolas</option>
+                                <option value="sachês">sachês</option>
+                                <option value="unidades">unidades</option>
+                            </select> 
+                        </div>
+                    
+                         <div class="form-group">
+                            <label for="emCategorias">Categoria Farmacológico</label>
+                            <select id="emCategorias" class="form-control">
+                                <option value="Analgésico/Antipirégico">Analgésico/Antipirégico</option>
+                                <option value="Antibótico">Antibótico</option>
+                                <option value="Anti-inflamatório">Anti-inflamatório</option>
+                                <option value="Antialérgico">Antialérgico</option>
+                                <option value="Protetor Gástrico">Protetor Gástrico</option>
+                                <option value="Antiespasmódico">Antiespasmódico</option>
+                                <option value="Antimético">Antimético</option>
+                                <option value="Solução">Solução</option>
+                                <option value="Vitamina/Suplemento">Vitamina/Suplemento</option>
+                            </select> 
+                        </div>
+
+                        <button class="btn-full btn"></button>
+
+                        <div id="painelRepor">
+                            <!--Histórico de entradas-->
+                            
+
+
+                        <div class="filter-"></div>
+            </div>
+        </div>
+    </div>

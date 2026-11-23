@@ -1,0 +1,998 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sentinela - Hospital Geral</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --azul-escuro: #123e63;
+      --azul: #2d6f9f;
+      --azul-claro: #6fa8c7;
+      --rosa: #c76f9d;
+      --lilas: #9f92c8;
+      --fundo: #edf4f8;
+      --texto: #24435b;
+      --borda: #d9e5ee;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--fundo);
+      font-family: Arial, Helvetica, sans-serif;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 25px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 1400px;
+      min-height: 730px;
+
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      box-shadow:
+        0 25px 70px rgba(18, 62, 99, 0.20);
+    }
+
+    /* =========================
+       LADO DO HOSPITAL
+       ========================= */
+
+    .hospital {
+      position: relative;
+      min-height: 730px;
+      overflow: hidden;
+
+      display: flex;
+      align-items: flex-end;
+
+      padding: 52px;
+
+      background: #7890a5;
+    }
+
+    .hospital img {
+      position: absolute;
+
+      inset: 0;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+      object-position: center;
+
+      z-index: 0;
+    }
+
+    .hospital::after {
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      background:
+        linear-gradient(
+          to top,
+          rgba(18, 62, 99, 0.78),
+          rgba(18, 62, 99, 0.12) 68%,
+          rgba(18, 62, 99, 0.03)
+        );
+
+      z-index: 1;
+
+      pointer-events: none;
+    }
+
+    .hospital-text {
+      position: relative;
+
+      z-index: 2;
+
+      color: white;
+
+      max-width: 620px;
+
+      transform: translateY(-400px);
+    }
+
+    .mini {
+      font-size: 13px;
+
+      letter-spacing: 3px;
+
+      font-weight: bold;
+
+      margin-bottom: 10px;
+    }
+
+    .hospital h1 {
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-size:
+        clamp(44px, 5vw, 72px);
+
+      letter-spacing: 3px;
+
+      line-height: 1;
+
+      margin-bottom: 8px;
+    }
+
+    .hospital h2 {
+      font-size: 18px;
+
+      letter-spacing: 5px;
+
+      margin-bottom: 15px;
+    }
+
+    /* =========================
+       FRASE COM CORAÇÃO
+       ========================= */
+
+    .hospital-slogan {
+      position: absolute;
+
+      left: 52px;
+      bottom: 35px;
+
+      z-index: 3;
+
+      display: flex;
+
+      align-items: center;
+
+      color: white;
+    }
+
+    .slogan-icon {
+      width: 52px;
+      height: 52px;
+
+      position: relative;
+
+      flex-shrink: 0;
+    }
+
+    .slogan-icon::before {
+      content: "♡";
+
+      position: absolute;
+
+      inset: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      color: white;
+
+      font-size: 52px;
+
+      line-height: 1;
+    }
+
+    .slogan-icon::after {
+      content: "+";
+
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      color: var(--rosa);
+
+      font-size: 18px;
+
+      font-weight: bold;
+    }
+
+    .slogan-line {
+      width: 2px;
+
+      height: 48px;
+
+      margin: 0 16px;
+
+      background: rgba(255, 255, 255, 0.8);
+
+      border-radius: 5px;
+    }
+
+    .hospital-slogan p {
+      margin: 0;
+
+      max-width: 360px;
+
+      color: white;
+
+      font-size: 15px;
+
+      line-height: 1.45;
+
+      font-weight: 500;
+    }
+
+    /* =========================
+       LADO DO LOGIN
+       ========================= */
+
+    .login-side {
+      position: relative;
+
+      background:
+        linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f9fcfd 70%,
+          #f4eff7 100%
+        );
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 48px;
+
+      overflow: hidden;
+    }
+
+    .login-side::before {
+      content: "";
+
+      position: absolute;
+
+      width: 310px;
+      height: 310px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(199, 111, 157, 0.08);
+
+      right: -155px;
+      top: -125px;
+    }
+
+    .login-side::after {
+      content: "";
+
+      position: absolute;
+
+      width: 220px;
+      height: 220px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(159, 146, 200, 0.08);
+
+      left: -115px;
+      bottom: -95px;
+    }
+
+    /* =========================
+       CARD
+       ========================= */
+
+    .login-card {
+      width: 100%;
+
+      max-width: 520px;
+
+      position: relative;
+
+      z-index: 3;
+
+      background:
+        rgba(255, 255, 255, 0.98);
+
+      border:
+        1px solid var(--borda);
+
+      border-radius: 27px;
+
+      padding: 50px;
+
+      box-shadow:
+        0 20px 50px
+        rgba(18, 62, 99, 0.13);
+    }
+
+    /* =========================
+       LOGO
+       ========================= */
+
+    .logo {
+      text-align: center;
+
+      margin-bottom: 28px;
+    }
+
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+
+      margin: 0 auto 12px;
+
+      position: relative;
+    }
+
+    .logo-icon::before {
+      content: "♡";
+
+      position: absolute;
+
+      inset: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      color:
+        var(--azul-escuro);
+
+      font-size: 80px;
+    }
+
+    .logo-icon::after {
+      content: "+";
+
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      color: var(--rosa);
+
+      font-size: 28px;
+
+      font-weight: bold;
+    }
+
+    .logo h1 {
+      color:
+        var(--azul-escuro);
+
+      font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      font-size: 35px;
+
+      letter-spacing: 2px;
+    }
+
+    .logo h2 {
+      color: #58748a;
+
+      font-size: 12px;
+
+      letter-spacing: 5px;
+
+      margin-top: 5px;
+    }
+
+    .logo p {
+      color: #7b909f;
+
+      font-size: 14px;
+
+      margin-top: 12px;
+    }
+
+    .linha {
+      width: 82px;
+
+      height: 3px;
+
+      margin:
+        20px auto 30px;
+
+      border-radius: 10px;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--azul),
+          var(--lilas),
+          var(--rosa)
+        );
+    }
+
+    /* =========================
+       CAMPOS
+       ========================= */
+
+    .campo {
+      margin-bottom: 20px;
+    }
+
+    .campo label {
+      display: block;
+
+      color: #31536c;
+
+      font-size: 14px;
+
+      font-weight: bold;
+
+      margin-bottom: 8px;
+    }
+
+    .input-container {
+      position: relative;
+    }
+
+    .icone {
+      position: absolute;
+
+      left: 17px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      font-size: 17px;
+
+      opacity: 0.65;
+
+      z-index: 2;
+    }
+
+    .campo input {
+      width: 100%;
+
+      height: 60px;
+
+      border:
+        1px solid var(--borda);
+
+      border-radius: 14px;
+
+      background: #fbfdff;
+
+      color: var(--texto);
+
+      font-size: 15px;
+
+      padding:
+        0 16px 0 47px;
+
+      outline: none;
+
+      transition: 0.2s;
+    }
+
+    .campo input::placeholder {
+      color: #9aabb8;
+    }
+
+    .campo input:focus {
+      border-color:
+        var(--azul-claro);
+
+      background: white;
+
+      box-shadow:
+        0 0 0 4px
+        rgba(76, 143, 181, 0.12);
+    }
+
+    /* =========================
+       BOTÃO
+       ========================= */
+
+    .btn-entrar {
+      width: 100%;
+
+      height: 60px;
+
+      border: none;
+
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--azul-escuro),
+          var(--azul-claro)
+        );
+
+      color: white;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 22px
+        rgba(45, 111, 159, 0.22);
+
+      transition: 0.2s;
+
+      margin-top: 4px;
+    }
+
+    .btn-entrar:hover {
+      transform:
+        translateY(-1px);
+
+      filter:
+        brightness(1.04);
+    }
+
+    .btn-entrar:disabled {
+      opacity: 0.7;
+
+      cursor: wait;
+
+      transform: none;
+    }
+
+    /* =========================
+       RODAPÉ
+       ========================= */
+
+    .rodape {
+      text-align: center;
+
+      border-top:
+        1px solid #e7edf2;
+
+      margin-top: 26px;
+
+      padding-top: 18px;
+
+      color: #8497a5;
+
+      font-size: 11px;
+
+      line-height: 1.7;
+    }
+
+    .coracao {
+      color: var(--rosa);
+
+      font-size: 14px;
+    }
+
+    /* =========================
+       CELULAR
+       ========================= */
+
+    @media (max-width: 900px) {
+
+      body {
+        padding: 12px;
+      }
+
+      .login-container {
+        grid-template-columns: 1fr;
+
+        min-height: auto;
+      }
+
+      .hospital {
+        min-height: 430px;
+      }
+
+      .login-side {
+        padding: 30px 20px;
+      }
+    }
+
+    @media (max-width: 520px) {
+
+      .hospital {
+        min-height: 330px;
+
+        padding: 25px;
+      }
+
+      .hospital-text {
+        transform: translateY(-180px);
+      }
+
+      .hospital h1 {
+        font-size: 40px;
+      }
+
+      .hospital h2 {
+        font-size: 13px;
+
+        letter-spacing: 3px;
+      }
+
+      .hospital-slogan {
+        left: 25px;
+
+        bottom: 25px;
+      }
+
+      .slogan-icon {
+        width: 44px;
+        height: 44px;
+      }
+
+      .slogan-icon::before {
+        font-size: 44px;
+      }
+
+      .slogan-icon::after {
+        font-size: 15px;
+      }
+
+      .slogan-line {
+        height: 42px;
+
+        margin: 0 12px;
+      }
+
+      .hospital-slogan p {
+        max-width: 270px;
+
+        font-size: 13px;
+
+        line-height: 1.4;
+      }
+
+      .login-card {
+        padding:
+          30px 23px;
+      }
+
+      .logo h1 {
+        font-size: 27px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <main class="login-container">
+
+    <!-- =========================
+         HOSPITAL
+         ========================= -->
+
+    <section class="hospital">
+
+      <!-- COLOQUE A NOVA IMAGEM NA PASTA frontend
+           COM O NOME: sentinela-hospital-bg.jpg -->
+
+      <img
+        src="file_000000009c78820e97ea46b3f62877cf.png"
+        alt="Hospital Geral Sentinela"
+      >
+
+      <div class="hospital-text">
+
+        <div class="mini">
+          CUIDADO • TECNOLOGIA • SEGURANÇA
+        </div>
+
+        <h1>
+          SENTINELA
+        </h1>
+
+        <h2>
+          HOSPITAL GERAL
+        </h2>
+
+      </div>
+
+
+      <div class="hospital-slogan">
+
+        <div class="slogan-icon"></div>
+
+        <div class="slogan-line"></div>
+
+        <p>
+          Cuidado e tecnologia para um atendimento mais seguro.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         LOGIN
+         ========================= -->
+
+    <section class="login-side">
+
+      <div class="login-card">
+
+        <div class="logo">
+
+          <div class="logo-icon"></div>
+
+          <h1>
+            SENTINELA
+          </h1>
+
+          <h2>
+            HOSPITAL GERAL
+          </h2>
+
+          <p>
+            Cuidado em cada detalhe
+          </p>
+
+          <div class="linha"></div>
+
+        </div>
+
+
+        <div class="campo">
+
+          <label for="usuario">
+            Usuário
+          </label>
+
+          <div class="input-container">
+
+            <span class="icone">
+              👤
+            </span>
+
+            <input
+              type="text"
+              id="usuario"
+              placeholder="Digite seu usuário"
+              autocomplete="username"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="campo">
+
+          <label for="senha">
+            Senha
+          </label>
+
+          <div class="input-container">
+
+            <span class="icone">
+              🔒
+            </span>
+
+            <input
+              type="password"
+              id="senha"
+              placeholder="Digite sua senha"
+              autocomplete="current-password"
+            >
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="btn-entrar"
+          id="btnEntrar"
+          onclick="login()"
+        >
+          Entrar no sistema
+        </button>
+
+
+        <div class="rodape">
+
+          <span class="coracao">
+            ♥
+          </span>
+
+          Ambiente seguro e protegido
+
+          <br>
+
+          Sentinela Hospital Geral
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    async function login() {
+
+      const usuario =
+        document
+          .getElementById("usuario")
+          .value
+          .trim();
+
+      const senha =
+        document
+          .getElementById("senha")
+          .value;
+
+      const botao =
+        document
+          .getElementById("btnEntrar");
+
+
+      if (!usuario || !senha) {
+
+        alert(
+          "Por favor, preencha o usuário e a senha."
+        );
+
+        return;
+      }
+
+
+      botao.disabled = true;
+
+      botao.innerText =
+        "Entrando...";
+
+
+      try {
+
+        const resposta =
+          await fetch(
+            "/login",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+                usuario: usuario,
+                senha: senha
+              })
+            }
+          );
+
+
+        if (!resposta.ok) {
+
+          throw new Error(
+            "Erro no servidor"
+          );
+
+        }
+
+
+        const data =
+          await resposta.json();
+
+
+        if (data.tipo === "triagem") {
+
+          window.location.href =
+            "triagem.html";
+
+          return;
+        }
+
+
+        if (data.tipo === "medico") {
+
+          window.location.href =
+            "medico.html";
+
+          return;
+        }
+
+
+        if (data.tipo === "atendimento") {
+
+          window.location.href =
+            "atendimento.html";
+
+          return;
+        }
+
+
+        alert(
+          "Usuário ou senha inválidos."
+        );
+
+
+        botao.disabled = false;
+
+        botao.innerText =
+          "Entrar no sistema";
+
+      }
+
+
+      catch (erro) {
+
+        console.error(
+          "Erro:",
+          erro
+        );
+
+        alert(
+          "Não foi possível conectar ao servidor."
+        );
+
+        botao.disabled = false;
+
+        botao.innerText =
+          "Entrar no sistema";
+
+      }
+
+    }
+
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (event.key === "Enter") {
+
+          login();
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
